@@ -1,6 +1,9 @@
 package main.classes;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Library {
     private ArrayList<Book> books;
@@ -75,8 +78,15 @@ public class Library {
      * @return             The list of students that match the search criteria. Returns null if search type is title or author.
      */
     public ArrayList<Student> searchStudents(SearchByType searchByType, ArrayList<Object> keys) {
-        // TODO complete function
-        return null;
+        return switch (searchByType) {
+            case ID -> students.stream()
+                               .filter(student -> keys.contains(student.getId()))
+                               .collect(Collectors.toCollection(ArrayList::new));
+            case NAME -> students.stream()
+                                 .filter(student -> keys.contains(student.getName()))
+                                 .collect(Collectors.toCollection(ArrayList::new));
+            default -> new ArrayList<>();
+        };
     }
 
     /**
@@ -88,8 +98,18 @@ public class Library {
      * @return             The list of books that match the search criteria. Returns null if search type is name.
      */
     public ArrayList<Book> searchBooks(SearchByType searchByType, ArrayList<Object> keys) {
-        // TODO complete function
-        return null;
+        return switch (searchByType) {
+            case ID -> books.stream()
+                            .filter(book -> keys.contains(book.getId()))
+                            .collect(Collectors.toCollection(ArrayList::new));
+            case TITLE -> books.stream()
+                               .filter(book -> keys.contains(book.getTitle()))
+                               .collect(Collectors.toCollection(ArrayList::new));
+            case AUTHOR -> books.stream()
+                                .filter(book -> keys.contains(book.getAuthor()))
+                                .collect(Collectors.toCollection(ArrayList::new));
+            default -> new ArrayList<>();
+        };
     }
 
     /**
